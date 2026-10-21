@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10151f">
+  <meta name="description" content="Zcash Privacy Claims Linter is an open-source tool that flags potentially overconfident privacy claims for human review.">
+  <title>Zcash Privacy Claims Linter</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #10151f;
+      --panel: #171f2d;
+      --text: #f4f6fb;
+      --muted: #aab5c7;
+      --accent: #f4b942;
+      --line: #303b4d;
+      --green: #a8e4c1;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      line-height: 1.7;
+    }
+    a { color: var(--accent); }
+    a:focus-visible, .button:focus-visible {
+      outline: 3px solid var(--green);
+      outline-offset: 4px;
+    }
+    .wrap { width: min(1080px, 90%); margin: auto; }
+    header {
+      border-bottom: 1px solid var(--line);
+      padding: 22px 0;
+    }
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .brand { font-weight: 750; color: var(--text); text-decoration: none; }
+    .nav-links { display: flex; gap: 22px; flex-wrap: wrap; }
+    .nav-links a { color: var(--muted); text-decoration: none; }
+    .hero { padding: 92px 0 76px; }
+    .eyebrow {
+      color: var(--green);
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      font-size: .78rem;
+      font-weight: 750;
+    }
+    h1 {
+      max-width: 850px;
+      font-size: clamp(2.5rem, 7vw, 5rem);
+      line-height: 1.06;
+      letter-spacing: -.055em;
+      margin: 20px 0;
+    }
+    h1 span { color: var(--accent); }
+    .lead {
+      max-width: 720px;
+      color: var(--muted);
+      font-size: clamp(1.05rem, 2.5vw, 1.25rem);
+    }
+    .actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 30px; }
+    .button {
+      display: inline-block;
+      padding: 12px 19px;
+      border-radius: 9px;
+      font-weight: 700;
+      text-decoration: none;
+      border: 1px solid var(--line);
+    }
+    .primary { background: var(--accent); color: #17130a; border-color: var(--accent); }
+    .secondary { color: var(--text); background: var(--panel); }
+    .note {
+      margin-top: 30px;
+      padding: 16px 18px;
+      border-left: 3px solid var(--green);
+      background: var(--panel);
+      color: var(--muted);
+      max-width: 740px;
+    }
+    section { padding: 64px 0; border-top: 1px solid var(--line); }
+    h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.2; letter-spacing: -.03em; }
+    h3 { margin-top: 0; }
+    .section-lead { color: var(--muted); max-width: 700px; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 28px; }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 23px;
+    }
+    .card p { color: var(--muted); margin-bottom: 0; }
+    .number { color: var(--accent); font-size: .85rem; font-weight: 800; }
+    pre {
+      overflow-x: auto;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #0a0e15;
+      color: var(--green);
+      font-size: .92rem;
+      line-height: 1.8;
+    }
+    .callout { border: 1px solid var(--line); border-radius: 14px; padding: 24px; background: var(--panel); }
+    .callout strong { color: var(--green); }
+    footer { padding: 30px 0 44px; color: var(--muted); font-size: .9rem; }
+    footer a { margin-right: 18px; }
+    @media (max-width: 720px) {
+      .hero { padding: 62px 0; }
+      .grid { grid-template-columns: 1fr; }
+      section { padding: 46px 0; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap nav">
+      <a class="brand" href="#">Zcash Privacy Claims Linter</a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#how-it-works">How it works</a>
+        <a href="#try-it">Try it</a>
+        <a href="#limitations">Limitations</a>
+        <a href="https://github.com/arkumta/zcash-privacy-claims-linter">GitHub ↗</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap hero">
+      <div class="eyebrow">Open source · Zcash ecosystem</div>
+      <h1>Make privacy claims more <span>carefully.</span></h1>
+      <p class="lead">
+        The Zcash Privacy Claims Linter is a local command-line tool that
+        flags potentially overconfident privacy claims in text and
+        configuration files, giving people a starting point for human review.
+      </p>
+      <div class="actions">
+        <a class="button primary" href="#try-it">Get started</a>
+        <a class="button secondary" href="https://github.com/arkumta/zcash-privacy-claims-linter">Explore the source code ↗</a>
+      </div>
+      <div class="note">
+        <strong>Its purpose is careful communication, not a verdict.</strong>
+        A flagged phrase is a prompt to review context, not proof that a
+        statement is false or that a system is insecure.
+      </div>
+    </div>
+
+    <section id="why">
+      <div class="wrap">
+        <div class="eyebrow">Why this project</div>
+        <h2>Privacy language deserves scrutiny.</h2>
+        <p class="section-lead">
+          Words such as “completely anonymous” or “impossible to track” can
+          imply stronger guarantees than the surrounding evidence supports.
+          This tool helps reviewers find language worth examining without
+          pretending that automated pattern matching can settle complex
+          privacy questions.
+        </p>
+      </div>
+    </section>
+
+    <section id="how-it-works">
+      <div class="wrap">
+        <div class="eyebrow">How it works</div>
+        <h2>A lightweight review workflow.</h2>
+        <div class="grid">
+          <article class="card">
+            <div class="number">01 / SCAN</div>
+            <h3>Check supported files</h3>
+            <p>Scan documentation and supported text or configuration formats in a local directory.</p>
+          </article>
+          <article class="card">
+            <div class="number">02 / FLAG</div>
+            <h3>Find strong claims</h3>
+            <p>Identify language associated with absolute anonymity, concealment, metadata protection, identity protection, or tracking prevention.</p>
+          </article>
+          <article class="card">
+            <div class="number">03 / REVIEW</div>
+            <h3>Keep a human in the loop</h3>
+            <p>Review the surrounding context and decide whether the wording needs clarification or evidence.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="try-it">
+      <div class="wrap">
+        <div class="eyebrow">Try it locally</div>
+        <h2>Run the linter.</h2>
+        <p class="section-lead">
+          Python is required. These commands clone the public repository,
+          create an isolated environment, and install the project locally.
+        </p>
+        <pre><code>git clone https://github.com/arkumta/zcash-privacy-claims-linter.git
+cd zcash-privacy-claims-linter
+
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -e .
+
+# Scan the repository and print findings
+zcash-privacy-lint . --format text
+
+# Produce machine-readable JSON
+zcash-privacy-lint . --format json
+
+# Run the test suite (install pytest if needed)
+python -m pip install pytest
+python -m pytest -v</code></pre>
+        <p class="section-lead">
+          The command-line tool also supports GitHub Actions output and an
+          option to fail when findings are present. See the repository
+          documentation for the latest details.
+        </p>
+        <div class="actions">
+          <a class="button primary" href="https://github.com/arkumta/zcash-privacy-claims-linter">Open repository ↗</a>
+          <a class="button secondary" href="https://github.com/arkumta/zcash-privacy-claims-linter/issues">Report an issue ↗</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="limitations">
+      <div class="wrap">
+        <div class="eyebrow">Responsible use</div>
+        <h2>Useful signals, not automated truth.</h2>
+        <div class="callout">
+          <p><strong>Human review remains essential.</strong></p>
+          <p>
+            The linter uses pattern-based rules. It may miss risky wording,
+            flag harmless wording, or misunderstand context. Its sentence
+            handling is heuristic, not a full understanding of natural
+            language. A finding is not a security audit, a guarantee about
+            Zcash, or a determination that a claim is inaccurate.
+          </p>
+          <p>
+            Treat results as review prompts. Verify technical statements
+            against appropriate evidence and explain the scope and limits of
+            any privacy guarantees.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contribute">
+      <div class="wrap">
+        <div class="eyebrow">Community project</div>
+        <h2>Help make privacy communication clearer.</h2>
+        <p class="section-lead">
+          Contributions, test cases, documentation improvements, and
+          thoughtful feedback can help make this tool more useful to the
+          Zcash community.
+        </p>
+        <div class="actions">
+          <a class="button primary" href="https://github.com/arkumta/zcash-privacy-claims-linter">View the code</a>
+          <a class="button secondary" href="https://github.com/arkumta/zcash-privacy-claims-linter/blob/main/CONTRIBUTING.md">Contribution guide ↗</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p>Zcash Privacy Claims Linter · Open source community project</p>
+      <p>
+        <a href="https://github.com/arkumta/zcash-privacy-claims-linter">GitHub</a>
+        <a href="https://github.com/arkumta/zcash-privacy-claims-linter/blob/main/LICENSE">License</a>
+        <a href="https://github.com/arkumta/zcash-privacy-claims-linter/issues">Issues</a>
+      </p>
+      <p>Independent community tooling. This website does not provide a privacy guarantee or security certification.</p>
+    </div>
+  </footer>
+</body>
+</html>
