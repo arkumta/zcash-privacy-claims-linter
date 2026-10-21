@@ -64,11 +64,7 @@ def scan_text(
     path: str = "<text>",
     rules: tuple[Rule, ...] = RULES,
 ) -> list[Finding]:
-    """Scan text for potentially overconfident privacy claims.
-
-    Explicit critical-discussion phrases are skipped to reduce some
-    false positives. This is heuristic filtering, not full language analysis.
-    """
+    """Scan text for potentially overconfident privacy claims."""
     findings: list[Finding] = []
 
     critical_discussion = re.compile(
@@ -80,32 +76,37 @@ def scan_text(
     )
 
     for line_number, line in enumerate(text.splitlines(), start=1):
-        # Conservative heuristic: skip lines explicitly framed as criticism.
-        if critical_discussion.search(line):
-            continue
+        sentences = re.split(r"(?<=[.!?])\s+", line.strip())
 
-        for rule in rules:
-            if rule.pattern.search(line):
-                excerpt = line.strip()
-                if len(excerpt) > 240:
-                    excerpt = excerpt[:237] + "..."
+        for sentence in sentences:
+            if not sentence:
+                continue
 
-                findings.append(
-                    Finding(
-                        rule.id,
-                        rule.title,
-                        "review",
-                        path,
-                        line_number,
-                        excerpt,
-                        rule.rationale,
-                        rule.recommendation,
-                        rule.reference_url,
+            # Ignore sentences that explicitly discuss a claim critically.
+            if critical_discussion.search(sentence):
+                continue
+
+            for rule in rules:
+                if rule.pattern.search(sentence):
+                    excerpt = line.strip()
+                    if len(excerpt) > 240:
+                        excerpt = excerpt[:237] + "..."
+
+                    findings.append(
+                        Finding(
+                            rule.id,
+                            rule.title,
+                            "review",
+                            path,
+                            line_number,
+                            excerpt,
+                            rule.rationale,
+                            rule.recommendation,
+                            rule.reference_url,
+                        )
                     )
-                )
 
     return findings
-
 
 def scan_path(
     target: Path,

@@ -1,4 +1,3 @@
-
 from zcash_privacy_lint.scanner import scan_text
 
 
@@ -63,6 +62,7 @@ def test_finding_preserves_file_line():
     assert match.path == "docs/guide.md"
     assert match.line == 3
 
+
 def test_does_not_flag_explicit_criticism_of_a_claim():
     text = (
         "The claim that every payment is completely anonymous is misleading."
@@ -73,4 +73,13 @@ def test_does_not_flag_explicit_criticism_of_a_claim():
 def test_still_flags_a_direct_absolute_claim():
     text = "Every payment is completely anonymous."
     findings = scan_text(text, "docs/marketing.md")
+    assert any(f.rule_id == "ZPL001" for f in findings)
+
+
+def test_critical_discussion_does_not_hide_a_separate_risky_claim():
+    text = (
+        "The claim that every payment is completely anonymous is misleading. "
+        "Our wallet makes every payment completely anonymous."
+    )
+    findings = scan_text(text, "docs/review.md")
     assert any(f.rule_id == "ZPL001" for f in findings)
